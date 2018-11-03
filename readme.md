@@ -1,4 +1,4 @@
-# Word Clock
+# Word Clock (German Version)
 
 Word clock macOS screensaver.
 
