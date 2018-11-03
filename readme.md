@@ -7,7 +7,7 @@ Featuring the excellent [Libre Franklin](https://github.com/impallari/Libre-Fran
 ![screenshot gif](screenshot.gif)
 
 ## Install
-Download [`Word Clock.saver`](https://github.com/chrstphrknwtn/word-clock/releases/download/0.0.1/word-clock.0.0.1.saver.zip)
+Download [`Word Clock.saver`](https://github.com/MrDrache333/word-clock-screensaver/releases)
 
 ## Related
 - [Epoch Flip Clock Screensaver](https://github.com/chrstphrknwtn/epoch-flip-clock-screensaver)
