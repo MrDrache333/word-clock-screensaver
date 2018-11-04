@@ -13,13 +13,19 @@ function updateWordClock(string) {
 		return;
 	}
 	const currentChars = Array.from(wordClock.innerText.toLowerCase());
-	const newChars = Array.from(string);
+	const newChars = Array.from(string.toLowerCase());
 
 	let overlapCharCount = 0;
-
+	if (wordClock.innerText.toLowerCase().includes('uhr') && string.toLowerCase().includes('uhr')) {
+		overlapCharCount += 2;
+	}
+	let goon = true
 	currentChars.forEach((char, i) => {
-		if (char === newChars[i]) {
+
+		if (char === newChars[i] && goon) {
 			overlapCharCount += 1;
+		}else {
+			goon = false;
 		}
 	});
 
@@ -27,12 +33,14 @@ function updateWordClock(string) {
 	const charsToRemove = (currentChars.length - overlapCharCount) + 1;
 	const removeString = currentChars.join('');
 
-	const keystrokeDelay = 60;
+	const keystrokeDelay = 100;
 	let removeDelayTotal;
 
 	for (let i = 0; i < charsToRemove; i++) {
 		setTimeout(() => {
-			setWordClock(removeString.slice(0, currentChars.length - i))
+			let newstring = removeString.slice(0, currentChars.length - i);
+			console.log(newstring)
+			setWordClock(newstring)
 		}, keystrokeDelay * i)
 		removeDelayTotal = keystrokeDelay * i;
 	}
@@ -42,7 +50,9 @@ function updateWordClock(string) {
 	const addString = newChars.join('');
 	for (let i = 0; i < charsToAdd; i++) {
 		setTimeout(() => {
-			setWordClock(addString.slice(0, overlapCharCount + i))
+			let newstring = addString.slice(0, overlapCharCount + i);
+			console.log(newstring);
+			setWordClock(newstring)
 		}, (keystrokeDelay * i) + removeDelayTotal)
 	}
 
@@ -50,6 +60,8 @@ function updateWordClock(string) {
 
 function setWordClock(string) {
 	// Franklin Gothic Black needs a bit of TLC
+	string = string.replace('Uhr', 'uhr');
+	string = string.replace('uhr', 'Uhr<br>');
 	string = string.replace('pa', '<span class="kern">p</span>a');
 	string = string.replace('lv', '<span class="kern">l</span>v');
 	wordClock.innerHTML = string;
@@ -58,6 +70,7 @@ function setWordClock(string) {
 /** Init / Update Clock
 ----------------------------------------------------------------------------- */
 let lastTime = 0;
+
 function update() {
 	if (lastTime != getTime().m){
 		const words = getTimeWordsDE(getTime());
@@ -68,6 +81,7 @@ function update() {
 
 setInterval(update, 2500);
 update();
+
 
 // Get Time
 function getTime() {
@@ -129,7 +143,7 @@ function getTimeWordsDE(time) {
 	}
 
 	// No special case, just [hour] [minutes]
-	return `${hourIntToWord(time.h)} Uhr ${minutesIntToWord(time.m)}`;
+	return `${hourIntToWord(time.h)} Uhr ${minutesIntToWord(time.m)} `;
 }
 
 function hourIntToWord(int) { // eslint-disable-line complexity
@@ -140,7 +154,7 @@ function hourIntToWord(int) { // eslint-disable-line complexity
 			return 'zwölf';
 		case 1:
 		case 13:
-			return 'eins';
+			return 'ein';
 		case 2:
 		case 14:
 			return 'zwei';
